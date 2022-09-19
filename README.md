@@ -1,26 +1,21 @@
-# Create a Web3 Forum with Polygon
+# Create a Web3 Survey with Polygon
 
-### Tutorial Details
+###  Details
 
-Today we're going to build together a fullstack decentralized forum that can be used in any dapp.
-
-See the full tutorial here -> https://www.pointer.gg/tutorials/create-a-web3-forum-with-polygon/1cb8f005-08f4-48a2-9d82-cd963e16f7f1
+This a final project for BSM WEB 3 course certification
 
 ### Overview
 
-To us at Pointer, one of the most interesting aspects of web3 is that it facilitates developers to build and share composable behaviors around databases.
+npx install
 
-Anyone can dig up a smart contract on GitHub, deploy it, and have their own microservice running in seconds.
+### Deploy Contracts on Mumbai Matic Testnet
 
-Not only that, but the stable API exposed by a smart contract is a blank canvas on top of which any frontend developer in the community can build and share components.
+npx hardhat run scripts/deploy-and-seed.js --network matic
 
-In that spirit, today we're going to build a deployable smart contract and an accompanying React component to add comment threads to your dapps.
+get the deployed survey contract address
 
-In theory this could be open sourced and published as an npm package to allow any developer to quickly add a forum to their dapp.
+modify view.js adding contract deployed address
 
-Here's what we're going to build:
+# Run SurveyPolygon
 
-https://user-images.githubusercontent.com/5760059/154543585-74136a91-bac1-4935-8790-c943b71f43df.mov
-
-Visit the tutorial to get started https://www.pointer.gg/tutorials/create-a-web3-forum-with-polygon/1cb8f005-08f4-48a2-9d82-cd963e16f7f1
-# SurveyPolygon
+npx run dev
