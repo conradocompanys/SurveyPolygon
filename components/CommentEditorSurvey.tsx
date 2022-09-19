@@ -4,17 +4,17 @@ import { constants } from "ethers";
 import Avatar from "@davatar/react";
 import AuthButton from "./AuthButton";
 import { useAccount } from "wagmi";
-import useAddComment from "../hooks/useAddComment";
+import useAddSurvey from "../hooks/useAddSurvey";
 
 interface CommentEditorProps {
   topic: string;
 }
 
-const CommentEditor: React.FunctionComponent<CommentEditorProps> = ({
+const CommentEditorSurvey: React.FunctionComponent<CommentEditorProps> = ({
   topic,
 }) => {
   const [message, setMessage] = React.useState("");
-  const mutation = useAddComment();
+  const mutation = useAddSurvey();
   const [accountQuery] = useAccount();
 
   return (
@@ -27,7 +27,7 @@ const CommentEditor: React.FunctionComponent<CommentEditorProps> = ({
         <Textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Write a message 2.."
+          placeholder="Write a message..2"
           p={3}
           flex={1}
           bg="whiteAlpha.100"
@@ -55,4 +55,4 @@ const CommentEditor: React.FunctionComponent<CommentEditorProps> = ({
   );
 };
 
-export default CommentEditor;
+export default CommentEditorSurvey;

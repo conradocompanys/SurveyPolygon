@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, ButtonProps } from "@chakra-ui/react";
 import { useAccount, useConnect } from "wagmi";
-import toast from "react-hot-toast";
+//import toast from "react-hot-toast";
 
 interface AuthButtonProps extends ButtonProps {}
 

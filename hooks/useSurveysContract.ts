@@ -3,12 +3,13 @@ import { useProvider, useSigner } from "wagmi";
 import type { BigNumber } from "ethers";
 // Import our contract ABI (a json representation of our contract's public interface).
 // The hardhat compiler writes this file to artifacts during compilation.
-import CommentsContract from "../artifacts/contracts/Comments.sol/Comments.json";
+import SurveysContract from "../artifacts/contracts/Surveys.sol/Surveys.json";
+import SurveysToken from "../artifacts/contracts/SurveyToken.sol/SurveyToken.json";
 
-export interface Comment {
+export interface Survey {
   id: string;
   topic: string;
-  message: string;
+  survey_data: string;
   creator_address: string;
   created_at: BigNumber;
 }
@@ -17,13 +18,17 @@ export enum EventType {
   CommentAdded = "CommentAdded",
 }
 
-const useCommentsContract = () => {
+const useSurveysContract = () => {
   // An ethers.Signer instance associated with the signed-in wallet.
   // https://docs.ethers.io/v5/api/signer/
   const [signer] = useSigner();
+
+  console.log("signer:",signer);
   // An ethers.Provider instance. This will be the same provider that is
   // passed as a prop to the WagmiProvider.
   const provider = useProvider();
+
+  console.log("provider:",provider);
 
   // This returns a new ethers. Contract ready to interact with our comments API.
   // We need to pass in the address of our deployed contract as well as its abi.
@@ -31,35 +36,47 @@ const useCommentsContract = () => {
   // no signed in wallet then we'll pass in the connected provider.
   const contract = wagmi.useContract({
     //addressOrName: "0xEEcb302Ae18972F346f6096B527f186543DF693e", //matic
-    addressOrName: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-    //addressOrName: "0x59b670e9fA9D0A427751Af201D676719a970857b", //Survey contract
-    contractInterface: CommentsContract.abi,
+    addressOrName: "0x9D2E99e92700f6113e6Bdd4694d38C9aCeee0FDB", //Survey contract
+    contractInterface: SurveysContract.abi,
     signerOrProvider: signer.data || provider,
   });
 
-  // Wrapper to add types to our getComments function.
-  const getComments = async (topic: string): Promise<Comment[]> => {
-    return contract.getComments(topic).then((comments) => {
-      console.log("cc",comments);
+  const contracttoken = wagmi.useContract({
+  //  //addressOrName: "0xEEcb302Ae18972F346f6096B527f186543DF693e", //matic
+    addressOrName: "0xf88eEEe1302300b9a87b5626027CdF0B99c87aaA", //Survey contract
+    contractInterface: SurveysToken.abi,
+    signerOrProvider: signer.data || provider,
+  });
+
+  // Wrapper to add types to our getSurveys function.
+  const getSurveys = async (topic: string): Promise<Survey[]> => {
+    return contract.getSurveys(topic).then((surveys) => {
+      console.log("surveys:",surveys);
       // Each comment is represented as array by default so we convert to object
-      return comments.map((c) => ({ ...c }));
+      return surveys.map((c) => ({ ...c }));
     });
   };
 
   // Wrapper to add types to our addComment function.
-  const addComment = async (topic: string, message: string): Promise<void> => {
+  const addSurvey = async (topic: string, surveymessage: string): Promise<void> => {
     // Create a new transaction
-    const tx = await contract.addComment(topic, message);
+    console.log("comments",surveymessage);
+    const tx = await contract.addSurvey(topic, surveymessage );
     // Wait for transaction to be mined
     await tx.wait();
+    
+   // const tx2 = await contracttoken.mint("0x32EEce76C2C2e8758584A83Ee2F522D4788feA0f", "2");
+   // await tx2.wait();
+
+
   };
 
   return {
     contract,
     chainId: contract.provider.network?.chainId,
-    getComments,
-    addComment,
+    getSurveys,
+    addSurvey,
   };
 };
 
-export default useCommentsContract;
+export default useSurveysContract;

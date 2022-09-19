@@ -13,19 +13,40 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
-  // We get the contract to deploy
-  const CommentsContract = await hre.ethers.getContractFactory("Comments");
-  const contract = await CommentsContract.deploy();
 
-  await contract.deployed();
+   // We get the survey contract to deploy
+   const SurveyContract = await hre.ethers.getContractFactory("Surveys");
+   const surveycontract = await SurveyContract.deploy();
+ 
+   await surveycontract.deployed();
+ 
 
-  const tx1 = await contract.addComment("my-blog-post", "My first comment");
-  await tx1.wait();
+   console.log("Contract Survey deployed to:----->", surveycontract.address);
 
-  const tx2 = await contract.addComment("my-blog-post", "My second comment");
-  await tx2.wait();
 
-  console.log("Contract deployed to:", contract.address);
+    // We get the survey contract to deploy
+
+    const SurveyToken = await hre.ethers.getContractFactory("SurveyToken");
+
+    [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
+
+    const surveytoken = await SurveyToken.deploy();
+  
+    await surveytoken.deployed();
+
+    const txt1 = await surveycontract.addSurvey("my-blog-post", "My first 1 survey");
+    await txt1.wait();
+  
+    
+    console.log("Contract TOKEN Survey deployed to:", surveytoken.address);
+
+
+
+    const ownerBalance = await surveytoken.balanceOf(owner.address);
+ 
+    
+  
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
